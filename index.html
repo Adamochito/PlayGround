@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#05060f">
+  <meta name="description" content="NEON DASH — a one-button rhythm platformer. Jump, fly, and survive the signal.">
+  <title>NEON DASH — Rhythm Platformer</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-view="menu">
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="atmosphere" aria-hidden="true">
+    <div class="atmosphere__scan"></div>
+    <div class="atmosphere__grain"></div>
+    <div class="atmosphere__vignette"></div>
+  </div>
+
+  <div id="app">
+    <!-- ───────────────────────────── MENU ───────────────────────────── -->
+    <section class="screen screen--menu" data-screen="menu" aria-label="Main menu">
+      <header class="topbar">
+        <a class="brand" href="#" id="brandHome" aria-label="Neon Dash home">
+          <span class="brand__mark"><i></i></span>
+          <span class="brand__type">NEON<span>//</span>DASH</span>
+        </a>
+        <div class="topbar__right">
+          <span class="signal"><i></i> SIGNAL ONLINE</span>
+          <button class="icon-btn" id="muteBtn" aria-label="Toggle sound" title="Toggle sound (M)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm12.5-2.5a8 8 0 0 1 0 11m2.8-13.8a12 12 0 0 1 0 16.6"/></svg>
+          </button>
+          <button class="icon-btn" id="settingsBtn" aria-label="Settings" title="Settings">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z"/><path d="m19.4 15 .1.1a2 2 0 1 1-2.8 2.8l-.1-.1a2 2 0 0 0-3.4 1.4v.2a2 2 0 1 1-4 0v-.2a2 2 0 0 0-3.4-1.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A2 2 0 0 0 1.6 12a2 2 0 0 0-1.4-3.4h-.2a2 2 0 1 1 0-4h.2A2 2 0 0 0 3.6 1.2l.1.1a2 2 0 1 1 2.8-2.8l.1.1A2 2 0 0 0 10 0V-.2a2 2 0 1 1 4 0V0a2 2 0 0 0 3.4 1.4l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A2 2 0 0 0 21.6 7.6h.2a2 2 0 1 1 0 4h-.2a2 2 0 0 0-2.2 3.4Z" transform="translate(1.2 2.4) scale(.9)"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="menu-layout">
+        <div class="hero">
+          <div class="eyebrow"><span></span> RHYTHM // REACTION // REPEAT</div>
+          <h1 class="logo">
+            <span class="logo__line logo__line--top" data-text="NEON">NEON</span>
+            <span class="logo__line logo__line--bottom" data-text="DASH">DASH</span>
+          </h1>
+          <p class="hero__lede">One button. Zero mercy.<br><strong>A hundred ways to break.</strong></p>
+          <div class="hero__actions">
+            <button class="btn btn--primary" id="playBtn" aria-label="Play">
+              <span class="btn__label">PLAY</span>
+              <span class="btn__sub">ENTER THE GRID</span>
+              <span class="btn__arrow" aria-hidden="true">▸</span>
+            </button>
+            <button class="btn btn--ghost" id="levelsBtn">
+              <span class="btn__label">LEVEL SELECT</span>
+              <span class="btn__sub">03 SIGNALS</span>
+            </button>
+          </div>
+          <div class="hero__meta">
+            <div class="meta-item"><span class="meta-label">BEST RUN</span><strong id="menuBest">0%</strong></div>
+            <div class="meta-item"><span class="meta-label">ATTEMPTS</span><strong id="menuAttempts">0</strong></div>
+            <div class="meta-item"><span class="meta-label">SHARDS</span><strong><i class="shard-dot"></i><span id="menuShards">0</span>/9</strong></div>
+          </div>
+        </div>
+
+        <aside class="feature-card" aria-label="Featured level">
+          <div class="feature-card__glow"></div>
+          <div class="feature-card__head">
+            <span>FEATURED SIGNAL</span><span class="mono">01 / 03</span>
+          </div>
+          <div class="preview-shell">
+            <canvas id="previewCanvas" width="720" height="400" aria-label="First Pulse level preview"></canvas>
+            <div class="preview-shell__grade"></div>
+            <div class="preview-shell__tag">LIVE PREVIEW</div>
+          </div>
+          <div class="feature-card__body">
+            <div class="feature-card__title-row">
+              <div>
+                <span class="card-kicker">SYNTHWAVE</span>
+                <h2>FIRST PULSE</h2>
+              </div>
+              <div class="difficulty difficulty--easy"><span>EASY</span><i></i><i></i><i class="dim"></i><i class="dim"></i><i class="dim"></i></div>
+            </div>
+            <p class="feature-card__copy">Learn the frequency. Find your rhythm. Don't look down.</p>
+            <div class="feature-card__stats">
+              <div><span>LENGTH</span><strong>0:53</strong></div>
+              <div><span>BPM</span><strong>120</strong></div>
+              <div><span>BEST</span><strong id="featureBest">—</strong></div>
+            </div>
+            <button class="btn btn--card" id="featurePlay">
+              <span>START RUN</span><span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </aside>
+      </div>
+
+      <footer class="menu-footer">
+        <div class="controls-hint">
+          <span><kbd>SPACE</kbd><em>JUMP / FLY</em></span>
+          <span><kbd>CLICK</kbd><em>JUMP / FLY</em></span>
+          <span><kbd>ESC</kbd><em>PAUSE</em></span>
+          <span><kbd>R</kbd><em>RESTART</em></span>
+        </div>
+        <div class="footer-credit">NEON DASH <span>v1.0</span> · A RHYTHM PLATFORMER</div>
+      </footer>
+    </section>
+
+    <!-- ─────────────────────────── LEVEL SELECT ─────────────────────────── -->
+    <section class="screen screen--levels" data-screen="levels" aria-label="Level select">
+      <header class="subbar">
+        <button class="back-btn" data-back="menu"><span>←</span> BACK</button>
+        <div class="subbar__title"><span>SELECT</span> SIGNAL</div>
+        <div class="subbar__meta">03 LEVELS <i></i> 09 SHARDS</div>
+      </header>
+      <div class="levels-wrap">
+        <div class="levels-heading">
+          <div>
+            <span class="eyebrow"><span></span> THE ARCHIVE</span>
+            <h2>CHOOSE YOUR<br><em>BREAKPOINT.</em></h2>
+          </div>
+          <p>Every signal is a different kind of chaos.<br>Three tracks. One perfect run.</p>
+        </div>
+        <div class="level-grid" id="levelGrid"></div>
+        <div class="levels-bottom">
+          <span>TIP — HOLD TO CHAIN JUMPS. TAP ORBS FOR EXTRA AIR.</span>
+          <button class="text-btn" id="levelsHowBtn">HOW TO PLAY <span>→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── HOW TO ───────────────────────────── -->
+    <section class="screen screen--how" data-screen="how" aria-label="How to play">
+      <header class="subbar">
+        <button class="back-btn" data-back="menu"><span>←</span> BACK</button>
+        <div class="subbar__title"><span>READ THE</span> SIGNAL</div>
+        <div class="subbar__meta">FIELD MANUAL 01</div>
+      </header>
+      <div class="how-wrap">
+        <div class="how-copy">
+          <span class="eyebrow"><span></span> SURVIVAL PROTOCOL</span>
+          <h2>ONE INPUT.<br><em>INFINITE OUTPUT.</em></h2>
+          <p>The grid moves. You don't stop. Time every jump to the beat, thread the neon, and reach the end of the signal without turning into confetti.</p>
+          <div class="how-keys">
+            <div class="key-row"><div class="keycaps"><kbd>SPACE</kbd><kbd>W</kbd><kbd>↑</kbd></div><div><strong>JUMP / THRUST</strong><span>Hold to auto-hop in cube mode. Hold to fly in ship mode.</span></div></div>
+            <div class="key-row"><div class="keycaps"><kbd>CLICK</kbd></div><div><strong>JUMP / THRUST</strong><span>Mouse and touch work everywhere.</span></div></div>
+            <div class="key-row"><div class="keycaps"><kbd>ESC</kbd><kbd>R</kbd></div><div><strong>PAUSE / RETRY</strong><span>Reset instantly. No loading screens. No excuses.</span></div></div>
+          </div>
+        </div>
+        <div class="how-grid">
+          <article class="how-card how-card--spike"><div class="how-card__icon icon-spike"></div><span class="mono">01</span><h3>SPIKES</h3><p>Touch one and the run is over. Jump early, not late.</p></article>
+          <article class="how-card how-card--orb"><div class="how-card__icon icon-orb"></div><span class="mono">02</span><h3>ORBS</h3><p>Tap while inside the ring to jump again mid-air.</p></article>
+          <article class="how-card how-card--pad"><div class="how-card__icon icon-pad"></div><span class="mono">03</span><h3>LAUNCH PADS</h3><p>Hitting one fires you skyward automatically.</p></article>
+          <article class="how-card how-card--ship"><div class="how-card__icon icon-ship"></div><span class="mono">04</span><h3>SHIP MODE</h3><p>Hold to rise, release to fall. Thread the corridor.</p></article>
+          <article class="how-card how-card--shard"><div class="how-card__icon icon-shard"></div><span class="mono">05</span><h3>SHARDS</h3><p>Three hidden per level. Collect them all to perfect the archive.</p></article>
+          <article class="how-card how-card--finish"><div class="how-card__icon icon-finish"></div><span class="mono">06</span><h3>THE GATE</h3><p>Reach the finish wall. Your best percent is saved.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── GAME HUD ───────────────────────────── -->
+    <div class="hud" id="hud" aria-live="polite">
+      <div class="hud__top">
+        <div class="hud__identity">
+          <span class="hud__level-no" id="hudLevelNo">01</span>
+          <div><span class="hud__kicker">SIGNAL</span><strong id="hudLevelName">FIRST PULSE</strong></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-meta"><span id="hudMode">CUBE</span><span id="hudPercent">0%</span></div>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div><div class="progress-glint" id="progressGlint"></div></div>
+        </div>
+        <div class="hud__right">
+          <div class="hud-stat"><span>ATTEMPT</span><strong id="hudAttempt">01</strong></div>
+          <div class="hud-stat hud-stat--shards"><span>SHARDS</span><strong><i class="shard-dot"></i><span id="hudShards">0/3</span></strong></div>
+          <button class="icon-btn icon-btn--hud" id="pauseBtn" aria-label="Pause" title="Pause (Esc)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="hud__callout" id="modeCallout"><span></span><strong>SHIP MODE</strong><em>HOLD TO THRUST</em></div>
+      <div class="hud__hint" id="startHint"><kbd>SPACE</kbd> or <kbd>CLICK</kbd> to jump <span>·</span> hold to auto-hop</div>
+    </div>
+
+    <!-- ───────────────────────────── PAUSE ───────────────────────────── -->
+    <section class="modal" id="pauseModal" aria-label="Paused">
+      <div class="modal__panel modal__panel--pause">
+        <span class="modal__kicker">SIGNAL INTERRUPTED</span>
+        <h2 class="modal__title">PAUSED</h2>
+        <div class="pause-stats"><div><span>PROGRESS</span><strong id="pauseProgress">0%</strong></div><div><span>ATTEMPT</span><strong id="pauseAttempt">01</strong></div><div><span>SHARDS</span><strong id="pauseShards">0/3</strong></div></div>
+        <button class="btn btn--primary btn--wide" id="resumeBtn"><span class="btn__label">RESUME</span><span class="btn__arrow" aria-hidden="true">▸</span></button>
+        <div class="modal__row">
+          <button class="btn btn--ghost btn--small" id="pauseRestart">RESTART</button>
+          <button class="btn btn--ghost btn--small" id="pauseLevels">LEVELS</button>
+          <button class="btn btn--ghost btn--small" id="pauseSettings">SETTINGS</button>
+        </div>
+        <p class="modal__hint"><kbd>ESC</kbd> RESUME <span>·</span> <kbd>R</kbd> RESTART</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── DEATH ───────────────────────────── -->
+    <section class="modal" id="deathModal" aria-label="Run failed">
+      <div class="modal__panel modal__panel--death">
+        <div class="death-ring" aria-hidden="true"><span></span></div>
+        <span class="modal__kicker modal__kicker--danger">SIGNAL LOST</span>
+        <h2 class="modal__title">RUN<br><em>TERMINATED</em></h2>
+        <div class="death-progress"><strong id="deathPercent">0%</strong><span>PROGRESS</span></div>
+        <div class="death-stats"><div><span>ATTEMPT</span><strong id="deathAttempt">01</strong></div><div><span>BEST</span><strong id="deathBest">0%</strong></div><div><span>SHARDS</span><strong id="deathShards">0/3</strong></div></div>
+        <button class="btn btn--primary btn--wide" id="retryBtn"><span class="btn__label">TRY AGAIN</span><span class="btn__sub">SPACE / CLICK</span><span class="btn__arrow" aria-hidden="true">▸</span></button>
+        <button class="text-btn modal__text-btn" id="deathLevels">EXIT TO LEVEL SELECT <span>→</span></button>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── COMPLETE ───────────────────────────── -->
+    <section class="modal" id="completeModal" aria-label="Level complete">
+      <div class="modal__panel modal__panel--complete">
+        <div class="complete-rays" aria-hidden="true"></div>
+        <span class="modal__kicker modal__kicker--success">SIGNAL COMPLETE</span>
+        <h2 class="modal__title">PERFECT<br><em>FREQUENCY.</em></h2>
+        <div class="complete-stars" id="completeStars"><i></i><i></i><i></i></div>
+        <div class="complete-stats">
+          <div><span>LEVEL</span><strong id="completeLevel">FIRST PULSE</strong></div>
+          <div><span>TIME</span><strong id="completeTime">0:00</strong></div>
+          <div><span>ATTEMPTS</span><strong id="completeAttempts">01</strong></div>
+          <div><span>SHARDS</span><strong id="completeShards">0/3</strong></div>
+        </div>
+        <button class="btn btn--primary btn--wide" id="nextLevelBtn"><span class="btn__label">NEXT SIGNAL</span><span class="btn__arrow" aria-hidden="true">▸</span></button>
+        <div class="modal__row">
+          <button class="btn btn--ghost btn--small" id="completeRetry">RUN AGAIN</button>
+          <button class="btn btn--ghost btn--small" id="completeLevels">LEVELS</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── SETTINGS ───────────────────────────── -->
+    <section class="modal" id="settingsModal" aria-label="Settings">
+      <div class="modal__panel modal__panel--settings">
+        <div class="settings-head"><div><span class="modal__kicker">SYSTEM CONFIG</span><h2 class="modal__title modal__title--sm">SETTINGS</h2></div><button class="icon-btn" id="settingsClose" aria-label="Close settings">✕</button></div>
+        <div class="settings-list">
+          <label class="setting"><div><strong>MASTER VOLUME</strong><span>All game audio</span></div><input type="range" id="volumeSlider" min="0" max="100" value="72"><output id="volumeOut">72</output></label>
+          <label class="setting"><div><strong>MUSIC</strong><span>Procedural soundtrack</span></div><input type="range" id="musicSlider" min="0" max="100" value="65"><output id="musicOut">65</output></label>
+          <label class="setting setting--toggle"><div><strong>SCREEN SHAKE</strong><span>Impact feedback</span></div><span class="switch"><input type="checkbox" id="shakeToggle" checked><i></i></span></label>
+          <label class="setting setting--toggle"><div><strong>REDUCED MOTION</strong><span>Calmer background and effects</span></div><span class="switch"><input type="checkbox" id="motionToggle"><i></i></span></label>
+          <label class="setting setting--toggle"><div><strong>HITBOXES</strong><span>Show collision zones</span></div><span class="switch"><input type="checkbox" id="hitboxToggle"><i></i></span></label>
+        </div>
+        <div class="settings-footer">
+          <button class="text-btn text-btn--danger" id="resetBtn">RESET ALL PROGRESS</button>
+          <span>NEON DASH v1.0</span>
+        </div>
+        <p class="modal__hint"><kbd>ESC</kbd> CLOSE</p>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <div class="rotate-note">ROTATE TO LANDSCAPE FOR THE FULL SIGNAL</div>
+
+  <script type="module" src="js/game.js"></script>
+</body>
+</html>
